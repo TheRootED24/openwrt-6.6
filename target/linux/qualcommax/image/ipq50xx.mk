@@ -1,3 +1,20 @@
+define Device/glinet_gl-b3000
+  $(call Device/FitImage)
+  $(call Device/UbiFit)
+  SOC := ipq5018
+  DEVICE_VENDOR := GL.iNET
+  DEVICE_MODEL := GL-B3000
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  DEVICE_DTS_CONFIG := config@mp03.5-c1
+  UBINIZE_OPTS := -E 5
+  IMAGES := nand-factory.ubi
+  DEVICE_PACKAGES := \
+  	ath11k-firmware-qcn6122 \
+  	ipq-wifi-glinet_gl-b3000 \
+endef
+TARGET_DEVICES += glinet_gl-b3000
+
 define Device/linksys_mx2000
 	$(call Device/FitImageLzma)
 	DEVICE_VENDOR := Linksys
