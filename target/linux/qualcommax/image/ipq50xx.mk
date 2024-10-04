@@ -11,7 +11,7 @@ define Device/glinet_gl-b3000
   IMAGES := nand-factory.ubi
   DEVICE_PACKAGES := \
   	ath11k-firmware-qcn6122 \
-  	ipq-wifi-glinet_gl-b3000 \
+  	ipq-wifi-glinet_gl-b3000
 endef
 TARGET_DEVICES += glinet_gl-b3000
 
