@@ -7,15 +7,16 @@ define Device/Default
 	DEVICE_DTS = $$(SOC)-$(lastword $(subst _, ,$(1)))
 	DEVICE_DTS_CONFIG := config@1
 	DEVICE_DTS_DIR := $(DTS_DIR)/qcom
+	DTS_CPPFLAGS-y += -D__AARCH64__
 	IMAGES := sysupgrade.bin
 	IMAGE/sysupgrade.bin = sysupgrade-tar | append-metadata
 	IMAGE/sysupgrade.bin/squashfs :=
 endef
 
 define Device/FitImage
-	KERNEL_SUFFIX := -uImage.itb
-	KERNEL = kernel-bin | libdeflate-gzip | fit gzip $$(KDIR)/image-$$(DEVICE_DTS).dtb
-	KERNEL_NAME := Image
+  KERNEL_SUFFIX := -fit-uImage.itb
+  KERNEL = kernel-bin | lzma | fit lzma $$(KDIR)/image-$$(DEVICE_DTS).dtb
+  KERNEL_NAME := Image
 endef
 
 define Device/FitImageLzma
@@ -31,9 +32,10 @@ define Device/EmmcImage
 endef
 
 define Device/UbiFit
-	KERNEL_IN_UBI := 1
-	IMAGES += factory.ubi
-	IMAGE/factory.ubi := append-ubi
+  KERNEL_IN_UBI := 1
+  IMAGES := nand-factory.ubi nand-sysupgrade.bin
+  IMAGE/nand-factory.ubi := append-ubi
+  IMAGE/nand-sysupgrade.bin := sysupgrade-tar | append-metadata
 endef
 
 include $(SUBTARGET).mk

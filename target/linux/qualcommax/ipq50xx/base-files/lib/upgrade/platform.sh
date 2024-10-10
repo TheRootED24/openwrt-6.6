@@ -1,3 +1,5 @@
+. /lib/functions/system.sh
+
 PART_NAME=firmware
 REQUIRE_IMAGE_METADATA=1
 
@@ -24,6 +26,11 @@ platform_do_upgrade() {
 		fw_setenv boot_part_ready 3
 		fw_setenv auto_recovery yes
 		nand_do_upgrade "$1"
+		;;
+	glinet,gl-b3000)
+		CI_UBIPART="rootfs1"
+		[ "$(find_mtd_chardev rootfs)" ] && CI_UBIPART="rootfs"
+		nand_upgrade_tar "$1"
 		;;
 	*)
 		default_do_upgrade "$1"
